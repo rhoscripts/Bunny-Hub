@@ -19,6 +19,19 @@ local HttpService = game:GetService("HttpService")
 local LocalPlayer = Players.LocalPlayer
 local Camera = workspace.CurrentCamera
 
+--------------------------------------------------------------------------------
+-- METATABLE SPOOF (anti-detection)
+--------------------------------------------------------------------------------
+pcall(function()
+	local mt = getrawmetatable(game)
+	local oldIndex = mt.__index
+	setreadonly(mt, false)
+	mt.__index = newcclosure(function(self, key)
+		return oldIndex(self, key)
+	end)
+	setreadonly(mt, true)
+end)
+
 local mathFloor = math.floor
 local round = function(n)
 	return mathFloor(tonumber(n) + 0.5)
